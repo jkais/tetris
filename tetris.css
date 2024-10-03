@@ -28,6 +28,8 @@ body {
     box-sizing: border-box;
 }
 
+#info {}
+
 #next {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
@@ -54,6 +56,42 @@ body {
 #next div {
     border: 1px solid #333;
     box-sizing: border-box;
+}
+
+#score {
+    margin-top: 40px;
+    margin-left: 20px;
+    position: relative;
+    text-align: right;
+}
+
+#score::before {
+    content: "SCORE";
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+#highscore {
+    margin-top: 40px;
+    margin-left: 20px;
+    position: relative;
+    text-align: right;
+}
+
+#highscore::before {
+    content: "HIGHSCORE";
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
 }
 
 button {

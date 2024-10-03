@@ -89,6 +89,7 @@ class Tetris {
     this.speed = 500; // in ms
     this.playing = false;
     this.alive = true;
+    this.highscore = 0;
     this.moveTetromino = this.moveTetromino.bind(this);
     this.startNewGame = this.startNewGame.bind(this);
   }
@@ -118,6 +119,9 @@ class Tetris {
       }
     }
 
+    let info = document.createElement("div");
+    info.id = "info"
+
     let next = document.createElement("div");
     next.id = "next";
 
@@ -129,14 +133,27 @@ class Tetris {
       }
     }
 
+    let score = document.createElement("div");
+    score.id = "score";
+    score.textContent = "0";
+
+    let highscore = document.createElement("div");
+    highscore.id = "highscore";
+    highscore.textContent = this.highscore;
+
     let button = document.createElement("button");
     button.innerHTML = "Neues Spiel starten"
     button.addEventListener("click", () => {
       this.startNewGame();
     })
 
+    info.appendChild(next)
+    info.appendChild(score);
+    info.appendChild(highscore);
+
     container.appendChild(grid);
-    container.appendChild(next);
+    container.appendChild(info);
+
     this.app.append(container);
     this.app.appendChild(button);
   }
@@ -146,6 +163,8 @@ class Tetris {
     this.newTetromino();
     this.alive = true;
     this.playing = true;
+    this.score = 0;
+    this.level = 0;
     this.rubble = Array(this.size[0])
       .fill()
       .map(() => Array(this.size[1]).fill());
@@ -164,7 +183,7 @@ class Tetris {
           this.playing = false;
         }
       }
-      this.updateGrid();
+      this.redrawUi();
     }
   }
 
@@ -172,6 +191,20 @@ class Tetris {
     this.rubble = this.rubble.filter((line) => {
       return !line.every((x) => x !== undefined)
     })
+
+    let linesRemoved = this.size[0] - this.rubble.length;
+
+    let perLine = {
+      0: 0,
+      1: 40,
+      2: 50,
+      3: 100,
+      4: 300
+    }
+
+    this.score += perLine[linesRemoved];
+    if (this.score > this.highscore) this.highscore = this.score;
+
     while (this.rubble.length < this.size[0]) {
       this.rubble.unshift(Array(this.size[1]).fill())
     }
@@ -222,7 +255,7 @@ class Tetris {
     if (["e"].includes(event.key)) {
       this.tetromino.rotateRight();
     }
-    this.updateGrid();
+    this.redrawUi();
   }
 
   newTetromino() {
@@ -231,10 +264,14 @@ class Tetris {
     this.drawNextTetromino();
   }
 
-  updateGrid() {
+  redrawUi() {
     document.querySelectorAll("#grid>*").forEach((e) => e.style = "");
     this.drawRubble();
     this.drawTetromino();
+    console.log(this.highscore);
+
+    document.getElementById("score").textContent = this.score;
+    document.getElementById("highscore").textContent = this.highscore;
   }
 
   drawRubble() {
@@ -258,7 +295,6 @@ class Tetris {
   drawNextTetromino() {
     document.querySelectorAll("#next>*").forEach((e) => e.style = "");
     let color = this.nextTetromino.color;
-    console.log(this.nextTetromino);
     this.nextTetromino.currentPosition().forEach((pos) => {
       pos[1] = pos[1] - 4;
       pos[0] = pos[0] + 1;
