@@ -22,7 +22,7 @@ class Tetromino {
       },
       {
         name: "Z",
-        blocks: [[0, 0], [1, 0], [1, 1], [2, 1]],
+        blocks: [[0, 0], [0, 1], [1, 1], [1, 2]],
         color: "red",
         position: [0, 5],
       },
@@ -102,6 +102,10 @@ class Tetris {
 
   drawUI() {
     this.app.textContent = "";
+
+    let container = document.createElement("container");
+    container.id = "container";
+
     let grid = document.createElement("div")
     grid.id = "grid";
     grid.style = `grid-template-columns: repeat(${this.size[1]}, 1fr)`;
@@ -113,6 +117,7 @@ class Tetris {
         grid.appendChild(cell);
       }
     }
+
     let next = document.createElement("div");
     next.id = "next";
 
@@ -124,14 +129,15 @@ class Tetris {
       }
     }
 
-
     let button = document.createElement("button");
     button.innerHTML = "Neues Spiel starten"
     button.addEventListener("click", () => {
       this.startNewGame();
     })
-    this.app.appendChild(grid);
-    this.app.appendChild(next);
+
+    container.appendChild(grid);
+    container.appendChild(next);
+    this.app.append(container);
     this.app.appendChild(button);
   }
 
@@ -152,7 +158,7 @@ class Tetris {
         this.tetromino.up();
         this.makeRubble();
         this.checkFullLines();
-        this.tetromino = new Tetromino();
+        this.newTetromino();
         if (this.checkCollision()) {
           this.alive = false;
           this.playing = false;
@@ -255,6 +261,7 @@ class Tetris {
     console.log(this.nextTetromino);
     this.nextTetromino.currentPosition().forEach((pos) => {
       pos[1] = pos[1] - 4;
+      pos[0] = pos[0] + 1;
       this.elementAt(pos, "next").style = `background-color: ${color};`;
     })
   }
