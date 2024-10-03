@@ -106,9 +106,9 @@ class Tetris {
       if (this.checkCollision()) {
         this.tetromino.up();
         this.makeRubble();
+        this.checkFullLines();
         this.tetromino = new Tetromino();
       }
-      //this.checkFullLines();
       this.updateGrid();
       this.checkGameOver();
     }
@@ -116,10 +116,10 @@ class Tetris {
 
   checkFullLines() {
     this.rubble = this.rubble.filter((line) => {
-      false;
+      return !line.every((x) => x !== undefined)
     })
-    while (this.rubble.length < this.size[1]) {
-      this.rubble.push(Array)
+    while (this.rubble.length < this.size[0]) {
+      this.rubble.unshift(Array(this.size[1]).fill())
     }
   }
 
@@ -130,10 +130,10 @@ class Tetris {
     let collision = false;
 
     this.tetromino.currentPosition().forEach((pos) => {
-      let [x, y] = pos
+      let [y, x] = pos
 
-      if (x < 0 || x >= this.size[0]) collision = true
-      if (y >= this.size[1]) collision = true
+      if (x < 0 || x >= this.size[1]) return collision = true
+      if (y >= this.size[0]) return collision = true
       if (this.rubble[y][x] !== undefined) collision = true
     })
 
@@ -183,9 +183,6 @@ class Tetris {
         }
       }
     }
-
-
-
   }
 
   drawTetromino() {
