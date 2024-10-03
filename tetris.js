@@ -3,43 +3,45 @@ class Tetromino {
 
     let tetrominos = [
       {
+        name: "I",
         blocks: [[0, 0], [1, 0], [2, 0], [3, 0]],
-        color: "green",
+        color: "cyan",
         position: [0, 5],
       },
       {
+        name: "O",
         blocks: [[0, 0], [0, 1], [1, 0], [1, 1]],
-        color: "red",
-        position: [0, 5],
-      },
-      {
-        blocks: [[0, 0], [0, 1], [1, 1], [1, 2]],
         color: "yellow",
         position: [0, 5],
       },
       {
+        name: "S",
         blocks: [[1, 0], [0, 1], [1, 1], [0, 2]],
+        color: "green",
+        position: [0, 5],
+      },
+      {
+        name: "Z",
+        blocks: [[0, 0], [1, 0], [1, 1], [2, 1]],
+        color: "red",
+        position: [0, 5],
+      },
+      {
+        name: "J",
+        blocks: [[0, 0], [1, 0], [2, 0], [2, 1]],
         color: "blue",
         position: [0, 5],
       },
       {
-        blocks: [[0, 0], [1, 0], [2, 0], [2, 1]],
-        color: "black",
-        position: [0, 5],
-      },
-      {
+        name: "L",
         blocks: [[0, 1], [1, 1], [2, 0], [2, 1]],
-        color: "pink",
+        color: "orange",
         position: [0, 5],
       },
       {
-        blocks: [[0, 1], [1, 1], [2, 0], [2, 1]],
-        color: "pink",
-        position: [0, 5],
-      },
-      {
-        blocks: [[0, 0], [0, 1], [0, 2], [1, 1]],
-        color: "lightblue",
+        name: "T",
+        blocks: [[1, 0], [0, 1], [1, 1], [2, 1]],
+        color: "purple",
         position: [0, 5],
       },
     ]
@@ -107,10 +109,21 @@ class Tetris {
     for (let y = 0; y < this.size[0]; y++) {
       for (let x = 0; x < this.size[1]; x++) {
         let cell = document.createElement("div");
-        cell.id = this.id(x, y);
+        cell.classList.add(this.id(x, y));
         grid.appendChild(cell);
       }
     }
+    let next = document.createElement("div");
+    next.id = "next";
+
+    for (let y = 0; y < 5; y++) {
+      for (let x = 0; x < 5; x++) {
+        let cell = document.createElement("div");
+        cell.classList.add(this.id(x, y));
+        next.appendChild(cell);
+      }
+    }
+
 
     let button = document.createElement("button");
     button.innerHTML = "Neues Spiel starten"
@@ -118,11 +131,13 @@ class Tetris {
       this.startNewGame();
     })
     this.app.appendChild(grid);
+    this.app.appendChild(next);
     this.app.appendChild(button);
   }
 
   startNewGame() {
-    this.tetromino = new Tetromino();
+    this.nextTetromino = new Tetromino();
+    this.newTetromino();
     this.alive = true;
     this.playing = true;
     this.rubble = Array(this.size[0])
@@ -204,6 +219,12 @@ class Tetris {
     this.updateGrid();
   }
 
+  newTetromino() {
+    this.tetromino = this.nextTetromino;
+    this.nextTetromino = new Tetromino();
+    this.drawNextTetromino();
+  }
+
   updateGrid() {
     document.querySelectorAll("#grid>*").forEach((e) => e.style = "");
     this.drawRubble();
@@ -228,8 +249,18 @@ class Tetris {
     })
   }
 
-  elementAt(point) {
-    return document.getElementById(this.id(point[1], point[0]))
+  drawNextTetromino() {
+    document.querySelectorAll("#next>*").forEach((e) => e.style = "");
+    let color = this.nextTetromino.color;
+    console.log(this.nextTetromino);
+    this.nextTetromino.currentPosition().forEach((pos) => {
+      pos[1] = pos[1] - 4;
+      this.elementAt(pos, "next").style = `background-color: ${color};`;
+    })
+  }
+
+  elementAt(point, container = "grid") {
+    return document.querySelector(`#${container} .${this.id(point[1], point[0])}`)
   }
 
   id(x, y) {
