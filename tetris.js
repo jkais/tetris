@@ -12,6 +12,36 @@ class Tetromino {
         color: "red",
         position: [0, 5],
       },
+      {
+        blocks: [[0, 0], [0, 1], [1, 1], [1, 2]],
+        color: "yellow",
+        position: [0, 5],
+      },
+      {
+        blocks: [[1, 0], [0, 1], [1, 1], [0, 2]],
+        color: "blue",
+        position: [0, 5],
+      },
+      {
+        blocks: [[0, 0], [1, 0], [2, 0], [2, 1]],
+        color: "black",
+        position: [0, 5],
+      },
+      {
+        blocks: [[0, 1], [1, 1], [2, 0], [2, 1]],
+        color: "pink",
+        position: [0, 5],
+      },
+      {
+        blocks: [[0, 1], [1, 1], [2, 0], [2, 1]],
+        color: "pink",
+        position: [0, 5],
+      },
+      {
+        blocks: [[0, 0], [0, 1], [0, 2], [1, 1]],
+        color: "lightblue",
+        position: [0, 5],
+      },
     ]
 
     let rand = Math.floor(Math.random() * tetrominos.length)
@@ -43,11 +73,11 @@ class Tetromino {
   }
 
   rotateLeft() {
-
+    this.blocks = this.blocks.map(([y, x]) => [-x, y]);
   }
 
   rotateRight() {
-
+    this.blocks = this.blocks.map(([y, x]) => [x, -y]);
   }
 }
 
@@ -108,9 +138,12 @@ class Tetris {
         this.makeRubble();
         this.checkFullLines();
         this.tetromino = new Tetromino();
+        if (this.checkCollision()) {
+          this.alive = false;
+          this.playing = false;
+        }
       }
       this.updateGrid();
-      this.checkGameOver();
     }
   }
 
@@ -121,9 +154,6 @@ class Tetris {
     while (this.rubble.length < this.size[0]) {
       this.rubble.unshift(Array(this.size[1]).fill())
     }
-  }
-
-  checkGameOver() {
   }
 
   checkCollision() {
@@ -160,10 +190,16 @@ class Tetris {
       }
     }
     if (["ArrowDown", "s"].includes(event.key)) {
+      while (!this.checkCollision()) {
+        this.tetromino.down();
+      }
+      this.tetromino.up();
     }
     if (["q"].includes(event.key)) {
+      this.tetromino.rotateLeft();
     }
     if (["e"].includes(event.key)) {
+      this.tetromino.rotateRight();
     }
     this.updateGrid();
   }
