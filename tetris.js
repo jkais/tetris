@@ -265,7 +265,10 @@ class Tetris {
   }
 
   redrawUi() {
-    document.querySelectorAll("#grid>*").forEach((e) => e.style = "");
+    document.querySelectorAll("#grid>*").forEach((e) => {
+      e.style = "";
+      e.classList.remove("block");
+    });
     this.drawRubble();
     this.drawTetromino();
     console.log(this.highscore);
@@ -280,6 +283,7 @@ class Tetris {
         let value = this.rubble[y][x]
         if (value !== undefined) {
           this.elementAt([y, x]).style = `background-color: ${value};`;
+          this.elementAt([y, x]).classList.add("block");
         }
       }
     }
@@ -289,6 +293,7 @@ class Tetris {
     let color = this.tetromino.color;
     this.tetromino.currentPosition().forEach((pos) => {
       this.elementAt(pos).style = `background-color: ${color};`;
+      this.elementAt(pos).classList.add("block");
     })
   }
 

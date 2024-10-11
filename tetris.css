@@ -28,6 +28,24 @@ body {
     box-sizing: border-box;
 }
 
+.block {
+    position: relative;
+}
+
+
+.block::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    border-top: 2px solid rgba(255, 255, 255, 0.4);
+    border-left: 2px solid rgba(255, 255, 255, 0.4);
+}
+
 #info {}
 
 #next {
