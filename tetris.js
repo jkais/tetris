@@ -91,7 +91,7 @@ class Tetris {
     this.alive = true;
     this.highscore = 0;
     this.moveTetromino = this.moveTetromino.bind(this);
-    this.moveLeft = this.moveLeft.bind(this);
+    this.click = this.click.bind(this);
     this.startNewGame = this.startNewGame.bind(this);
   }
 
@@ -147,27 +147,28 @@ class Tetris {
 
     let leftButton = document.createElement("button");
     leftButton.innerHTML = "←";
-    leftButton.addEventListener("click", this.moveLeft);
+    leftButton.addEventListener("click", () => this.click("left"));
 
-    let clockwiseButton = document.createElement("button");
-    clockwiseButton.innerHTML = "↻";
+    let rotateLeftButton = document.createElement("button");
+    rotateLeftButton.innerHTML = "↻";
+    rotateLeftButton.addEventListener("click", () => this.rotateLeft());
 
     let dropButton = document.createElement("button");
     dropButton.innerHTML = "↓";
+    dropButton.addEventListener("click", () => this.click("down"))
 
-    let counterclockwiseButton = document.createElement("button");
-    counterclockwiseButton.innerHTML = "↺";
+    let rotateRightButton = document.createElement("button");
+    rotateRightButton.innerHTML = "↺";
+    rotateRightButton.addEventListener("click", () => this.rotateRight());
 
     let rightButton = document.createElement("button");
     rightButton.innerHTML = "→";
-    
-
-
+    rightButton.addEventListener("click", () => this.click("right"));
 
     controls.appendChild(leftButton);
-    controls.appendChild(clockwiseButton);
+    controls.appendChild(rotateLeftButton);
     controls.appendChild(dropButton);
-    controls.appendChild(counterclockwiseButton);
+    controls.appendChild(rotateRightButton);
     controls.appendChild(rightButton);
 
     //this.app.appendChild(score);
@@ -255,32 +256,68 @@ class Tetris {
       this.moveLeft();
     }
     if (["ArrowRight", "d"].includes(event.key)) {
-      this.tetromino.right();
-      if (this.checkCollision()) {
-        this.tetromino.left();
-      }
+      this.moveRight();
     }
     if (["ArrowDown", "s"].includes(event.key)) {
-      while (!this.checkCollision()) {
-        this.tetromino.down();
-      }
-      this.tetromino.up();
+      this.moveDown();
     }
     if (["q"].includes(event.key)) {
-      this.tetromino.rotateLeft();
+      this.rotateLeft();
     }
     if (["e"].includes(event.key)) {
-      this.tetromino.rotateRight();
+      this.rotateRight();
     }
     this.redrawUi();
   }
 
+  click(action) {
+    switch(action) {
+      case "left":
+        this.moveLeft();
+        break;
+      case "right":
+        this.moveRight();
+        break;
+      case "down":
+        this.moveDown();
+        break;
+      case "rotate-left":
+        this.rotateLeft();
+        break;
+      case "rotate-right":
+        this.rotateRight();
+        break;
+    }
+    this.redrawUi();
+  }
 
   moveLeft() {
     this.tetromino.left();
     if (this.checkCollision()) {
       this.tetromino.right();
     }
+  }
+
+  moveRight() {
+    this.tetromino.right();
+    if (this.checkCollision()) {
+      this.tetromino.left();
+    }
+  }
+
+  moveDown() { 
+    while (!this.checkCollision()) {
+      this.tetromino.down();
+    }
+    this.tetromino.up();
+  }
+
+  rotateLeft() {
+    this.tetromino.rotateLeft();
+  }
+
+  rotateRight() {
+    this.tetromino.rotateRight();
   }
 
   newTetromino() {
@@ -298,8 +335,8 @@ class Tetris {
     this.drawTetromino();
     console.log(this.highscore);
 
-    document.getElementById("score").textContent = this.score;
-    document.getElementById("highscore").textContent = this.highscore;
+    //document.getElementById("score").textContent = this.score;
+    //document.getElementById("highscore").textContent = this.highscore;
   }
 
   drawRubble() {
