@@ -91,6 +91,7 @@ class Tetris {
     this.alive = true;
     this.highscore = 0;
     this.moveTetromino = this.moveTetromino.bind(this);
+    this.moveLeft = this.moveLeft.bind(this);
     this.startNewGame = this.startNewGame.bind(this);
   }
 
@@ -146,10 +147,15 @@ class Tetris {
 
     let leftButton = document.createElement("button");
     leftButton.innerHTML = "←";
+    leftButton.addEventListener("click", this.moveLeft);
 
     let rightButton = document.createElement("button");
     rightButton.innerHTML = "→";
 
+
+    "↺"
+    "↻"
+    "↓"
 
     info.appendChild(leftButton);
     info.appendChild(next)
@@ -236,10 +242,7 @@ class Tetris {
 
   moveTetromino(event) {
     if (["ArrowLeft", "a"].includes(event.key)) {
-      this.tetromino.left();
-      if (this.checkCollision()) {
-        this.tetromino.right();
-      }
+      this.moveLeft();
     }
     if (["ArrowRight", "d"].includes(event.key)) {
       this.tetromino.right();
@@ -260,6 +263,14 @@ class Tetris {
       this.tetromino.rotateRight();
     }
     this.redrawUi();
+  }
+
+
+  moveLeft() {
+    this.tetromino.left();
+    if (this.checkCollision()) {
+      this.tetromino.right();
+    }
   }
 
   newTetromino() {
