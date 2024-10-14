@@ -6,43 +6,43 @@ class Tetromino {
         name: "I",
         blocks: [[0, 0], [1, 0], [2, 0], [3, 0]],
         color: "cyan",
-        position: [0, 5],
+        position: [0, 4],
       },
       {
         name: "O",
         blocks: [[0, 0], [0, 1], [1, 0], [1, 1]],
         color: "yellow",
-        position: [0, 5],
+        position: [0, 4],
       },
       {
         name: "S",
         blocks: [[1, 0], [0, 1], [1, 1], [0, 2]],
         color: "green",
-        position: [0, 5],
+        position: [0, 4],
       },
       {
         name: "Z",
         blocks: [[0, 0], [0, 1], [1, 1], [1, 2]],
         color: "red",
-        position: [0, 5],
+        position: [0, 4],
       },
       {
         name: "J",
         blocks: [[0, 0], [1, 0], [2, 0], [2, 1]],
         color: "blue",
-        position: [0, 5],
+        position: [0, 4],
       },
       {
         name: "L",
         blocks: [[0, 1], [1, 1], [2, 0], [2, 1]],
         color: "orange",
-        position: [0, 5],
+        position: [0, 4],
       },
       {
         name: "T",
         blocks: [[1, 0], [0, 1], [1, 1], [2, 1]],
         color: "purple",
-        position: [0, 5],
+        position: [0, 4],
       },
     ]
 
@@ -138,19 +138,28 @@ class Tetris {
     highscore.id = "highscore";
     highscore.textContent = this.highscore;
 
-    let button = document.createElement("button");
-    button.innerHTML = "Neues Spiel starten"
-    button.addEventListener("click", () => {
+    let startButton = document.createElement("button");
+    startButton.innerHTML = "Neues Spiel starten"
+    startButton.addEventListener("click", () => {
       this.startNewGame();
     })
 
-    info.appendChild(next)
+    let leftButton = document.createElement("button");
+    leftButton.innerHTML = "←";
 
-    this.app.appendChild(score);
-    this.app.appendChild(highscore);
+    let rightButton = document.createElement("button");
+    rightButton.innerHTML = "→";
+
+
+    info.appendChild(leftButton);
+    info.appendChild(next)
+    info.appendChild(rightButton);
+
+    //this.app.appendChild(score);
+    //this.app.appendChild(highscore);
     this.app.append(grid);
     this.app.append(info);
-    this.app.appendChild(button);
+    this.app.appendChild(startButton);
   }
 
   startNewGame() {
