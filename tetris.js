@@ -104,9 +104,6 @@ class Tetris {
   drawUI() {
     this.app.textContent = "";
 
-    let container = document.createElement("container");
-    container.id = "container";
-
     let grid = document.createElement("div")
     grid.id = "grid";
     grid.style = `grid-template-columns: repeat(${this.size[1]}, 1fr)`;
@@ -148,13 +145,11 @@ class Tetris {
     })
 
     info.appendChild(next)
-    info.appendChild(score);
-    info.appendChild(highscore);
 
-    container.appendChild(grid);
-    container.appendChild(info);
-
-    this.app.append(container);
+    this.app.appendChild(score);
+    this.app.appendChild(highscore);
+    this.app.append(grid);
+    this.app.append(info);
     this.app.appendChild(button);
   }
 
