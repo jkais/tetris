@@ -117,8 +117,8 @@ class Tetris {
       }
     }
 
-    let info = document.createElement("div");
-    info.id = "info"
+    let controls = document.createElement("div");
+    controls.id = "controls"
 
     let next = document.createElement("div");
     next.id = "next";
@@ -149,22 +149,32 @@ class Tetris {
     leftButton.innerHTML = "←";
     leftButton.addEventListener("click", this.moveLeft);
 
+    let clockwiseButton = document.createElement("button");
+    clockwiseButton.innerHTML = "↻";
+
+    let dropButton = document.createElement("button");
+    dropButton.innerHTML = "↓";
+
+    let counterclockwiseButton = document.createElement("button");
+    counterclockwiseButton.innerHTML = "↺";
+
     let rightButton = document.createElement("button");
     rightButton.innerHTML = "→";
+    
 
 
-    "↺"
-    "↻"
-    "↓"
 
-    info.appendChild(leftButton);
-    info.appendChild(next)
-    info.appendChild(rightButton);
+    controls.appendChild(leftButton);
+    controls.appendChild(clockwiseButton);
+    controls.appendChild(dropButton);
+    controls.appendChild(counterclockwiseButton);
+    controls.appendChild(rightButton);
 
     //this.app.appendChild(score);
     //this.app.appendChild(highscore);
     this.app.append(grid);
-    this.app.append(info);
+    this.app.appendChild(next)
+    this.app.append(controls);
     this.app.appendChild(startButton);
   }
 
